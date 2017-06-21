@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 08:35:03 2017 romain pillot
-** Last update Wed Jun 21 11:05:59 2017 romain pillot
+** Last update Wed Jun 21 11:36:02 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -49,7 +49,21 @@ static t_type	file_gettype(char const *file)
   if (stat(file, &infos))
     return (false);
   return (S_ISDIR(infos.st_mode) ? DIRECTORY :
-	  S_ISREG(infos.st_mode) ? BINARY : UNDEFINED);
+	  S_ISREG(infos.st_mode) && str_ends(file, BINARY_EXT) ? BINARY :
+	  UNDEFINED);
+}
+
+char	*file_getname(char const *path)
+{
+  int	i;
+  int	j;
+
+  i = -1;
+  j = 0;
+  while (path[++i])
+    if (path[i] == FILE_SEPARATOR && path[i + 1])
+      j = i;
+  return (strdup(path + j + (!j ? 0 : 1)));
 }
 
 t_node		*parse_tree(char const *str)
@@ -62,7 +76,7 @@ t_node		*parse_tree(char const *str)
   node = node_create(str, file_gettype(str));
   if (node->type != DIRECTORY)
     return (node);
-  if ((i = scandir(str, &files, NULL, alphasort)) <= 1)
+  if ((i = scandir(str, &files, NULL, alphasort)) <= 0)
     return (node);
   j = 0;
   while (j < i) {

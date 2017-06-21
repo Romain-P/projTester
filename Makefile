@@ -5,7 +5,7 @@
 ## Login   <romain.pillot@epitech.net>
 ## 
 ## Started on  Sun Jun  4 17:02:11 2017 romain pillot
-## Last update Wed Jun 21 10:37:16 2017 romain pillot
+## Last update Wed Jun 21 11:36:41 2017 romain pillot
 ##
 
 CC	=	gcc
@@ -35,11 +35,12 @@ SRCS	=	src/main.c			\
 		src/util/str/str_reverse.c	\
 		src/util/str/str_concat.c	\
 		src/util/str/str_isnumber.c	\
-		src/util/str/str_replace.c
+		src/util/str/str_replace.c	\
+		src/util/str/str_ends.c
 
 OBJS	=	$(SRCS:.c=.o)
 
-CFLAGS	+=	-Iinc -g -Werror -Wall -Wextra
+CFLAGS	+=	-Iinc -g #-Werror -Wall -Wextra
 
 all:	$(NAME)
 
