@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 15:12:03 2017 romain pillot
-** Last update Wed Jun 21 18:47:55 2017 romain pillot
+** Last update Wed Jun 21 23:21:16 2017 romain pillot
 */
 
 #include <stdlib.h>
@@ -33,8 +33,8 @@ void		parse_tdf(t_node *node)
   char		*str;
   t_type	type;
 
-  if ((fd = open(node->label, O_RDONLY)) == -1 ||
-      !(node->test = malloc(sizeof(t_test))))
+  if (!(node->test = malloc(sizeof(t_test))) ||
+      (fd = open(node->label, O_RDONLY)) == -1)
     return ;
   node->test->args = NULL;
   node->test->result = NULL;

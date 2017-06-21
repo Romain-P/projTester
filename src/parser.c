@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 08:35:03 2017 romain pillot
-** Last update Wed Jun 21 17:46:04 2017 romain pillot
+** Last update Wed Jun 21 23:15:01 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -50,7 +50,7 @@ t_type		file_gettype(char const *file)
 {
   struct stat	infos;
 
-  if (stat(file, &infos))
+  if (!file || stat(file, &infos))
     return (false);
   return (S_ISDIR(infos.st_mode) ? DIRECTORY :
 	  S_ISREG(infos.st_mode) && str_ends(file, BINARY_EXT) ? BINARY :

@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 12:03:15 2017 romain pillot
-** Last update Wed Jun 21 19:43:35 2017 romain pillot
+** Last update Wed Jun 21 23:39:47 2017 romain pillot
 */
 
 #include <stdlib.h>
@@ -23,7 +23,7 @@ static bool	in_directory(char const *cmd)
 {
   struct	stat rights;
 
-  return (!stat(cmd, &rights) &&
+  return (file_gettype(cmd) != DIRECTORY && !stat(cmd, &rights) &&
 	  access(cmd, F_OK) != -1 && access(cmd, X_OK) != -1 &&
 	  rights.st_mode && (rights.st_mode & S_IEXEC));
 }
@@ -48,7 +48,8 @@ char	*cmd_getpath(char const *cmd)
 	if (!(path = malloc(sizeof(char) * (strlen(paths + j) + strlen(cmd) + 2))))
 	  return (NULL);
 	strcat(strcat(strcat(path, paths + j), "/"), cmd);
-	if (access(path, F_OK) != -1 && access(path, X_OK) != -1)
+	if (access(path, F_OK) != -1 && access(path, X_OK) != -1 &&
+	    file_gettype(path) != DIRECTORY)
 	  return (path);
 	free(path);
 	j = i + 1;

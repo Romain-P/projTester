@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 11:43:05 2017 romain pillot
-** Last update Wed Jun 21 12:23:05 2017 romain pillot
+** Last update Wed Jun 21 23:31:49 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -27,6 +27,8 @@ t_option	*parse_options(int ac, char **args)
 	      "%s: invalid binary.\n", *args);
       return (NULL);
     }
+  else if (!args[2])
+    option->binary = NULL;
   option->directory = args[1];
   option->output = args[2] ? args[3] : NULL;
   return (option);
