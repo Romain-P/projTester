@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 15:36:42 2017 romain pillot
-** Last update Wed Jun 21 23:34:19 2017 romain pillot
+** Last update Wed Jun 21 23:44:09 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -17,17 +17,19 @@
 #include "util.h"
 
 static void	apply_tests(t_node *root,
-		    t_option *opt,
-		    char *(*applier)(t_test *test, t_option *opt))
+			    t_option *opt,
+			    char *(*applier)(t_test *test, t_option *opt))
 {
   char		**path;
   int		len;
   int		i;
+  char		*output;
 
   path = str_split(strdup(root->label), FILE_SEPARATOR);
   len = tab_length(path);
   i = 0;
-  if (root->type == BINARY && root->test && root->test->args)
+  if (root->type == BINARY && root->test && root->test->args &&
+      (output = applier(root->test, opt)))
     {
       while (++i < len)
 	{
@@ -35,7 +37,7 @@ static void	apply_tests(t_node *root,
 	    path[i][strlen(path[i]) - strlen(BINARY_EXT)] = 0;
 	  printf(i + 1 == len ? "%s: " : "[%s] ", path[i]);
 	}
-      printf("%s\n", applier(root->test, opt));
+      printf("%s\n", output);
     }
   i = -1;
   while (++i < root->nodes->length)
@@ -79,7 +81,8 @@ static char	*collect_output(t_test *test, t_option *option)
       output = NULL;
       while ((str = scan_line(link[CHANNEL_READ])))
 	output = str_concat(output, str_concat(str, "\n", true), true);
-      output[strlen(output) - 1] = 0;
+      if (output)
+	output[strlen(output) - 1] = 0;
       waitpid(pid, &status, 0);
       return (test->result ?
 	      str_equals(output, test->result) ? "OK" : "KO" : output);
