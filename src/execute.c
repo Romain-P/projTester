@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 15:36:42 2017 romain pillot
-** Last update Wed Jun 21 19:41:30 2017 romain pillot
+** Last update Wed Jun 21 19:50:30 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@ static void	apply_tests(t_node *root,
 	    path[i][strlen(path[i]) - strlen(BINARY_EXT)] = 0;
 	  printf(i + 1 == len ? "%s: " : "[%s] ", path[i]);
 	}
-      printf("%s", applier(root->test, opt));
+      printf("%s\n", applier(root->test, opt));
     }
   i = -1;
   while (++i < root->nodes->length)
@@ -82,7 +82,7 @@ static char	*collect_output(t_test *test, t_option *option)
       output[strlen(output) - 1] = 0;
       waitpid(pid, &status, 0);
       return (test->result ?
-	      str_equals(output, test->result) ? "OK\n" : "KO\n" : output);
+	      str_equals(output, test->result) ? "OK" : "KO" : output);
     }
   else
     exec_child(link, test, option);
