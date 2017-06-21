@@ -1,10 +1,11 @@
 /*
-** requirement.c for  in /home/romain.pillot/projects/ADM_palindrome_2016
+** requirement.c for  in /home/romain.pillot/projects/ADM_projTester_2016
 ** 
 ** Made by romain pillot
 ** Login   <romain.pillot@epitech.net>
-** * sStarted on  Thu Jun 14 07:05:30 2017 romain pillot
-** Last update Wed Jun 21 08:02:49 2017 romain pillot
+** 
+** Started on  Wed Jun 21 19:43:10 2017 romain pillot
+** Last update Wed Jun 21 19:43:11 2017 romain pillot
 */
 
 #include <stdlib.h>

@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 12:03:15 2017 romain pillot
-** Last update Wed Jun 21 14:07:38 2017 romain pillot
+** Last update Wed Jun 21 19:43:35 2017 romain pillot
 */
 
 #include <stdlib.h>
@@ -15,9 +15,9 @@
 #include <fcntl.h>
 #include <string.h>
 #include <sys/wait.h>
-#include "tester.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "tester.h"
 
 static bool	in_directory(char const *cmd)
 {

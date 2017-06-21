@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 15:36:42 2017 romain pillot
-** Last update Wed Jun 21 19:29:56 2017 romain pillot
+** Last update Wed Jun 21 19:41:30 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -43,29 +43,22 @@ static void	apply_tests(t_node *root,
   TAB_FREE(path);
 }
 
-static t_array	*create_arguments(char const *bin, char * const *args)
-{
-  t_array	*array;
-
-  array = array_create();
-  array_add(array, strdup(bin));
-  while (*args)
-    array_add(array, *args++);
-  array_add(array, NULL);
-  return (array);
-}
-
 static void	exec_child(int link[2], t_test *test, t_option *option)
 {
   int		fd;
   t_array	*args;
+  int		i;
 
   if (test->input && (fd = open(test->input, O_RDONLY)) != -1)
     dup2(fd, STDIN_FILENO);
   dup2(link[CHANNEL_WRITE], STDOUT_FILENO);
   close(link[CHANNEL_READ]);
   close(link[CHANNEL_WRITE]);
-  args = create_arguments(option->binary, test->args);
+  args = array_create();
+  array_add(args, strdup(option->binary));
+  i = -1;
+  while (test->args[++i])
+    array_add(args, test->args[i]);
   execv(option->binary, (char **) args->values);
   _exit(_EXIT_FAILURE);
 }
@@ -86,8 +79,10 @@ static char	*collect_output(t_test *test, t_option *option)
       output = NULL;
       while ((str = scan_line(link[CHANNEL_READ])))
 	output = str_concat(output, str_concat(str, "\n", true), true);
+      output[strlen(output) - 1] = 0;
       waitpid(pid, &status, 0);
-      return (output);
+      return (test->result ?
+	      str_equals(output, test->result) ? "OK\n" : "KO\n" : output);
     }
   else
     exec_child(link, test, option);
