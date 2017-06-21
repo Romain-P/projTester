@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 06:59:37 2017 romain pillot
-** Last update Wed Jun 21 12:22:24 2017 romain pillot
+** Last update Wed Jun 21 17:01:36 2017 romain pillot
 */
 
 #ifndef TESTER_H_
@@ -17,19 +17,32 @@
 # define FILE_SEPARATOR	('/')
 # define BINARY_EXT	(".tdf")
 
+# define LINE_ARGS	("ARGS:")
+# define LINE_INPUT	("INPUT:")
+# define LINE_RESULT	("RES:")
+
 # include "array.h"
 
 typedef enum	e_type
 {
   UNDEFINED,
   BINARY,
+  OTHER_FILE,
   DIRECTORY
 }		t_type;
+
+typedef struct	s_test
+{
+  char		*result;
+  char		**args;
+  char		*input;
+}		t_test;
 
 typedef struct	s_node
 {
   char		*label;
   t_type	type;
+  t_test	*test;
   t_array	*nodes;
 }		t_node;
 
@@ -40,9 +53,13 @@ typedef struct	s_option
   char		*output;
 }		t_option;
 
+void		execute(t_node *node, t_option *option);
+
 t_node		*parse_tree(char const *str);
 
 t_option	*parse_options(int ac, char **args);
+
+void		parse_tdf(t_node *node);
 
 char		*file_getname(char const *path);
 

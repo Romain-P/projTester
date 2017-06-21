@@ -5,11 +5,12 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Thu Nov 24 11:14:29 2016 romain pillot
-** Last update Wed Jun 21 14:21:12 2017 romain pillot
+** Last update Wed Jun 21 16:50:42 2017 romain pillot
 */
 
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 #include <stdlib.h>
 #include "tester.h"
 #include "array.h"
@@ -25,7 +26,7 @@ static void	show_dirs(t_node *node, int step)
     printf("-");
   file = file_getname(node->label);
   printf("%s", file);
-  if (!str_ends(file, (char[]){FILE_SEPARATOR, 0}) && node->type == DIRECTORY)
+  if (file[strlen(file) - 1] != FILE_SEPARATOR && node->type == DIRECTORY)
     printf("%c\n", FILE_SEPARATOR);
   else
     printf("\n");
@@ -44,5 +45,7 @@ int		main(int ac, char **args)
   node = parse_tree(args[1]);
   if (!option->binary)
     show_dirs(node, 0);
+  else
+    execute(node, option);
   return (_EXIT_SUCCESS);
 }

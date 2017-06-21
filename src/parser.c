@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 08:35:03 2017 romain pillot
-** Last update Wed Jun 21 12:22:10 2017 romain pillot
+** Last update Wed Jun 21 16:20:49 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include "tester.h"
 #include "util.h"
 
@@ -33,12 +34,15 @@ static char	*path_concat(char const *a, char const *b)
 static t_node	*node_create(char const *name, t_type type)
 {
   t_node	*node;
+  int		fd;
 
   if (!(node = malloc(sizeof(t_node))))
     return (NULL);
-  node->label = name ? strdup(name) : NULL;
+  node->label = strdup(name);
+  node->test = NULL;
   node->type = type;
   node->nodes = array_create();
+  parse_tdf(node);
   return (node);
 }
 
@@ -50,7 +54,7 @@ t_type		file_gettype(char const *file)
     return (false);
   return (S_ISDIR(infos.st_mode) ? DIRECTORY :
 	  S_ISREG(infos.st_mode) && str_ends(file, BINARY_EXT) ? BINARY :
-	  UNDEFINED);
+	  S_ISREG(infos.st_mode) ? OTHER_FILE : UNDEFINED);
 }
 
 char	*file_getname(char const *path)
