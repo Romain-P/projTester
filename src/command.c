@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 12:03:15 2017 romain pillot
-** Last update Wed Jun 21 12:05:16 2017 romain pillot
+** Last update Wed Jun 21 14:07:38 2017 romain pillot
 */
 
 #include <stdlib.h>
@@ -16,6 +16,17 @@
 #include <string.h>
 #include <sys/wait.h>
 #include "tester.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+
+static bool	in_directory(char const *cmd)
+{
+  struct	stat rights;
+
+  return (!stat(cmd, &rights) &&
+	  access(cmd, F_OK) != -1 && access(cmd, X_OK) != -1 &&
+	  rights.st_mode && (rights.st_mode & S_IEXEC));
+}
 
 char	*cmd_getpath(char const *cmd)
 {
@@ -24,6 +35,8 @@ char	*cmd_getpath(char const *cmd)
   int	j;
   char	*path;
 
+  if (in_directory(cmd))
+    return (strdup(cmd));
   if (!(paths = getenv("PATH")))
     return (NULL);
   i = -1;

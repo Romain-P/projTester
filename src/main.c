@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Thu Nov 24 11:14:29 2016 romain pillot
-** Last update Wed Jun 21 12:43:58 2017 romain pillot
+** Last update Wed Jun 21 14:09:50 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -21,7 +21,8 @@ static void	show_dirs(t_node *node, int step)
   i = -1;
   while (++i < step * 5)
     write(1, "-", 1);
-  printf("%s\n", file_getname(node->label));
+  printf("%s%c\n", file_getname(node->label),
+	 step && node->type == DIRECTORY ? '/' : 0);
   i = -1;
   while (++i < node->nodes->length)
     show_dirs((t_node *)node->nodes->values[i], step + 1);
