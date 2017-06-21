@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Thu Nov 24 11:14:29 2016 romain pillot
-** Last update Wed Jun 21 14:19:31 2017 romain pillot
+** Last update Wed Jun 21 14:21:12 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -25,8 +25,8 @@ static void	show_dirs(t_node *node, int step)
     printf("-");
   file = file_getname(node->label);
   printf("%s", file);
-  if (!str_ends(file, "/") && node->type == DIRECTORY)
-    printf("%c\n", '/');
+  if (!str_ends(file, (char[]){FILE_SEPARATOR, 0}) && node->type == DIRECTORY)
+    printf("%c\n", FILE_SEPARATOR);
   else
     printf("\n");
   i = -1;
