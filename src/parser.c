@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 08:35:03 2017 romain pillot
-** Last update Wed Jun 21 11:36:02 2017 romain pillot
+** Last update Wed Jun 21 12:22:10 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -42,7 +42,7 @@ static t_node	*node_create(char const *name, t_type type)
   return (node);
 }
 
-static t_type	file_gettype(char const *file)
+t_type		file_gettype(char const *file)
 {
   struct stat	infos;
 
@@ -78,12 +78,10 @@ t_node		*parse_tree(char const *str)
     return (node);
   if ((i = scandir(str, &files, NULL, alphasort)) <= 0)
     return (node);
-  j = 0;
-  while (j < i) {
+  j = -1;
+  while (++j < i)
     if (!str_equals(files[j]->d_name, ".") &&
 	!str_equals(files[j]->d_name, ".."))
       array_add(node->nodes, parse_tree(path_concat(str, files[j]->d_name)));
-    j++;
-  }
   return (node);
 }
