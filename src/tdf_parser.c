@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 15:12:03 2017 romain pillot
-** Last update Wed Jun 21 15:29:39 2017 romain pillot
+** Last update Wed Jun 21 18:47:55 2017 romain pillot
 */
 
 #include <stdlib.h>
@@ -13,6 +13,19 @@
 #include <string.h>
 #include "tester.h"
 #include "util.h"
+
+static void	complete_input(t_node *node)
+{
+  int		len;
+  char		*str;
+
+  if (!node->label || !node->test || !node->test->input)
+    return ;
+  len = strlen(node->label) - strlen(file_getname(node->label));
+  str = strdup(node->label);
+  str[len] = 0;
+  node->test->input = str_concat(str, node->test->input, false);
+}
 
 void		parse_tdf(t_node *node)
 {
@@ -36,6 +49,7 @@ void		parse_tdf(t_node *node)
 	node->test->result = strdup(str + strlen(LINE_RESULT));
       FREE(str);
     }
+  complete_input(node);
   if ((type = file_gettype(node->test->input)) != OTHER_FILE &&
       type != BINARY)
     FREE(node->test->input);

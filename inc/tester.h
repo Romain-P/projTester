@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 06:59:37 2017 romain pillot
-** Last update Wed Jun 21 17:01:36 2017 romain pillot
+** Last update Wed Jun 21 18:09:20 2017 romain pillot
 */
 
 #ifndef TESTER_H_
@@ -20,6 +20,9 @@
 # define LINE_ARGS	("ARGS:")
 # define LINE_INPUT	("INPUT:")
 # define LINE_RESULT	("RES:")
+
+# define CHANNEL_READ	(0)
+# define CHANNEL_WRITE	(1)
 
 # include "array.h"
 
@@ -62,6 +65,8 @@ t_option	*parse_options(int ac, char **args);
 void		parse_tdf(t_node *node);
 
 char		*file_getname(char const *path);
+
+char		*path_concat(char const *a, char const *b);
 
 t_type		file_gettype(char const *file);
 

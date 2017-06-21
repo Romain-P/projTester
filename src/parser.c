@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 08:35:03 2017 romain pillot
-** Last update Wed Jun 21 16:20:49 2017 romain pillot
+** Last update Wed Jun 21 17:46:04 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -19,10 +19,10 @@
 #include "tester.h"
 #include "util.h"
 
-static char	*path_concat(char const *a, char const *b)
+char	*path_concat(char const *a, char const *b)
 {
-  int		len;
-  char		*new;
+  int	len;
+  char	*new;
 
   len = strlen(a);
   new = strdup(a);

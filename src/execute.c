@@ -5,11 +5,14 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 15:36:42 2017 romain pillot
-** Last update Wed Jun 21 17:02:55 2017 romain pillot
+** Last update Wed Jun 21 19:29:56 2017 romain pillot
 */
 
 #include <stdio.h>
+#include <sys/wait.h>
 #include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "tester.h"
 #include "util.h"
 
@@ -32,7 +35,7 @@ static void	apply_tests(t_node *root,
 	    path[i][strlen(path[i]) - strlen(BINARY_EXT)] = 0;
 	  printf(i + 1 == len ? "%s: " : "[%s] ", path[i]);
 	}
-      printf("%s\n", applier(root->test, opt));
+      printf("%s", applier(root->test, opt));
     }
   i = -1;
   while (++i < root->nodes->length)
@@ -40,12 +43,75 @@ static void	apply_tests(t_node *root,
   TAB_FREE(path);
 }
 
-
-static char	*collect_output(t_test *node, t_option *option)
+static t_array	*create_arguments(char const *bin, char * const *args)
 {
-  return ("OK");
+  t_array	*array;
+
+  array = array_create();
+  array_add(array, strdup(bin));
+  while (*args)
+    array_add(array, *args++);
+  array_add(array, NULL);
+  return (array);
 }
+
+static void	exec_child(int link[2], t_test *test, t_option *option)
+{
+  int		fd;
+  t_array	*args;
+
+  if (test->input && (fd = open(test->input, O_RDONLY)) != -1)
+    dup2(fd, STDIN_FILENO);
+  dup2(link[CHANNEL_WRITE], STDOUT_FILENO);
+  close(link[CHANNEL_READ]);
+  close(link[CHANNEL_WRITE]);
+  args = create_arguments(option->binary, test->args);
+  execv(option->binary, (char **) args->values);
+  _exit(_EXIT_FAILURE);
+}
+
+static char	*collect_output(t_test *test, t_option *option)
+{
+  int		pid;
+  int		status;
+  int		link[2];
+  char		*str;
+  char		*output;
+
+  if (pipe(link) == -1 || (pid = fork()) == -1)
+    return (NULL);
+  else if (pid)
+    {
+      close(link[CHANNEL_WRITE]);
+      output = NULL;
+      while ((str = scan_line(link[CHANNEL_READ])))
+	output = str_concat(output, str_concat(str, "\n", true), true);
+      waitpid(pid, &status, 0);
+      return (output);
+    }
+  else
+    exec_child(link, test, option);
+  return (NULL);
+}
+
 void	execute(t_node *node, t_option *option)
 {
+  FILE	*file;
+  int	hold;
+
+  if (option->output &&
+      (file = fopen(option->output, "a")))
+    {
+      setbuf(stdout, NULL);
+      fflush(stdout);
+      hold = dup(STDOUT_FILENO);
+      dup2(fileno(file), STDOUT_FILENO);
+    }
   apply_tests(node, option, &collect_output);
+  if (option->output && file)
+    {
+      dup2(hold, STDOUT_FILENO);
+      close(hold);
+      fclose(file);
+    }
 }
