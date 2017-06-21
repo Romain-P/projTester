@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Thu Jun 15 07:05:30 2017 romain pillot
-** Last update Wed Jun 21 07:30:41 2017 romain pillot
+** Last update Wed Jun 21 08:02:49 2017 romain pillot
 */
 
 #include <stdlib.h>
@@ -36,6 +36,7 @@ char	*get_path(char const *cmd)
 	strcat(strcat(strcat(path, paths + j), "/"), cmd);
 	if (access(path, F_OK) != -1 && access(path, X_OK) != -1)
 	  return (path);
+	free(path);
 	j = i + 1;
       }
   return (NULL);
@@ -46,9 +47,7 @@ void	my_ps_synthesis()
   int	pid;
   char	*path;
 
-  if (!(path = get_path("ps")))
-    return ;
-  if ((pid = fork()) == -1)
+  if (!(path = get_path("ps")) || (pid = fork()) == -1)
     {
       perror("fork");
       return ;
@@ -57,4 +56,6 @@ void	my_ps_synthesis()
     wait(&pid);
   else
     execv(path, (char *[]){"ps", NULL});
+  if (path)
+    free(path);
 }
