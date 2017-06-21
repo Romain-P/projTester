@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 15:36:42 2017 romain pillot
-** Last update Wed Jun 21 23:44:09 2017 romain pillot
+** Last update Wed Jun 21 23:52:22 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -74,11 +74,11 @@ static char	*collect_output(t_test *test, t_option *option)
   char		*output;
 
   if (pipe(link) == -1 || (pid = fork()) == -1)
-    return (NULL);
+    return ("");
   else if (pid)
     {
       close(link[CHANNEL_WRITE]);
-      output = NULL;
+      output = strdup("");
       while ((str = scan_line(link[CHANNEL_READ])))
 	output = str_concat(output, str_concat(str, "\n", true), true);
       if (output)
@@ -89,7 +89,7 @@ static char	*collect_output(t_test *test, t_option *option)
     }
   else
     exec_child(link, test, option);
-  return (NULL);
+  return ("");
 }
 
 void	execute(t_node *node, t_option *option)
