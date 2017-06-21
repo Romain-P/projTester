@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 06:59:37 2017 romain pillot
-** Last update Wed Jun 21 08:34:13 2017 romain pillot
+** Last update Wed Jun 21 10:54:38 2017 romain pillot
 */
 
 #ifndef TESTER_H_
@@ -14,12 +14,15 @@
 # define _EXIT_FAILURE	(84)
 # define _EXIT_SUCCESS	(0)
 
+# define FILE_SEPARATOR	('/')
+
+# include "array.h"
+
 typedef enum	e_type
 {
   UNDEFINED,
   BINARY,
-  FOLDER,
-  ARRAY
+  DIRECTORY
 }		t_type;
 
 typedef struct	s_node
@@ -28,5 +31,7 @@ typedef struct	s_node
   t_type	type;
   t_array	*nodes;
 }		t_node;
+
+t_node		*parse_tree(char const *str);
 
 #endif /** !TESTER_H_ **/
