@@ -5,11 +5,12 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 11:43:05 2017 romain pillot
-** Last update Wed Jun 21 23:31:49 2017 romain pillot
+** Last update Thu Jun 22 07:27:13 2017 romain pillot
 */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "tester.h"
 #include "util.h"
 
@@ -30,6 +31,10 @@ t_option	*parse_options(int ac, char **args)
   else if (!args[2])
     option->binary = NULL;
   option->directory = args[1];
+  option->directory_name = file_getname(args[1]);
+  if (option->directory_name[strlen(option->directory_name) - 1]
+      == FILE_SEPARATOR)
+    option->directory_name[strlen(option->directory_name) - 1] = 0;
   option->output = args[2] ? args[3] : NULL;
   return (option);
 }

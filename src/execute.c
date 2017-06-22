@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 15:36:42 2017 romain pillot
-** Last update Wed Jun 21 23:52:22 2017 romain pillot
+** Last update Thu Jun 22 07:37:26 2017 romain pillot
 */
 
 #include <stdio.h>
@@ -15,6 +15,15 @@
 #include <unistd.h>
 #include "tester.h"
 #include "util.h"
+
+static int	get_root_index(char **path, t_option *opt)
+{
+  int		i;
+
+  i = -1;
+  while (path && path[++i] && !str_equals(path[i], opt->directory_name));
+  return (i);
+}
 
 static void	apply_tests(t_node *root,
 			    t_option *opt,
@@ -27,7 +36,7 @@ static void	apply_tests(t_node *root,
 
   path = str_split(strdup(root->label), FILE_SEPARATOR);
   len = tab_length(path);
-  i = 0;
+  i = get_root_index(path, opt);
   if (root->type == BINARY && root->test && root->test->args &&
       (output = applier(root->test, opt)))
     {

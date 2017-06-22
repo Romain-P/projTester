@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 06:59:37 2017 romain pillot
-** Last update Wed Jun 21 18:09:20 2017 romain pillot
+** Last update Thu Jun 22 07:13:09 2017 romain pillot
 */
 
 #ifndef TESTER_H_
@@ -52,6 +52,7 @@ typedef struct	s_node
 typedef struct	s_option
 {
   char		*directory;
+  char		*directory_name;
   char		*binary;
   char		*output;
 }		t_option;
