@@ -5,7 +5,7 @@
 ** Login   <romain.pillot@epitech.net>
 ** 
 ** Started on  Wed Jun 21 12:03:15 2017 romain pillot
-** Last update Wed Jun 21 23:39:47 2017 romain pillot
+** Last update Thu Jun 22 07:51:58 2017 romain pillot
 */
 
 #include <stdlib.h>
@@ -18,6 +18,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "tester.h"
+#include "util.h"
 
 static bool	in_directory(char const *cmd)
 {
@@ -35,8 +36,9 @@ char	*cmd_getpath(char const *cmd)
   int	j;
   char	*path;
 
-  if (in_directory(cmd))
-    return (strdup(cmd));
+  if (str_contains(cmd, (char[]){FILE_SEPARATOR, 0}) || in_directory(cmd))
+    return (file_gettype(cmd) != DIRECTORY
+	    && file_gettype(cmd) != UNDEFINED ? strdup(cmd) : NULL);
   if (!(paths = getenv("PATH")))
     return (NULL);
   i = -1;
